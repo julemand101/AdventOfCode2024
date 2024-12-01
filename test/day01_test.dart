@@ -1,5 +1,5 @@
-// --- Day 1: Trebuchet?! ---
-// https://adventofcode.com/2023/day/1
+// --- Day 1: Historian Hysteria ---
+// https://adventofcode.com/2024/day/1
 
 import 'dart:io';
 import 'package:advent_of_code_2024/day01.dart';
@@ -12,36 +12,37 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA('''
-1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet
+          solveA(r'''
+3   4
+4   3
+2   5
+1   3
+3   9
+3   3
 '''
               .asLines),
-          equals(142));
+          equals(11));
     });
     test('Solution', () {
-      expect(solveA(input), equals(53974));
+      expect(solveA(input), equals(1341714));
     });
   });
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB('''
-two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen          
+          solveB(r'''
+3   4
+4   3
+2   5
+1   3
+3   9
+3   3
 '''
               .asLines),
-          equals(281));
+          equals(31));
     });
     test('Solution', () {
-      expect(solveB(input), equals(52840));
+      expect(solveB(input), equals(27384707));
     });
   });
 }

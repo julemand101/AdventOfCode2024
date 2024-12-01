@@ -1,57 +1,39 @@
-// --- Day 1: Trebuchet?! ---
-// https://adventofcode.com/2023/day/1
+// --- Day 1: Historian Hysteria ---
+// https://adventofcode.com/2024/day/1
 
 import 'package:collection/collection.dart';
 
-int solveA(Iterable<String> input) =>
-    input.map((line) => line.split('')).map((charList) {
-      final firstDigit = charList.map(int.tryParse).nonNulls.first;
-      final lastDigit = charList.reversed.map(int.tryParse).nonNulls.first;
+int solveA(Iterable<String> input) {
+  final listA = <int>[];
+  final listB = <int>[];
 
-      return firstDigit * 10 + lastDigit;
-    }).sum;
+  for (final line in input) {
+    final [valueA, valueB] = line.split('   ');
+    listA.add(int.parse(valueA));
+    listB.add(int.parse(valueB));
+  }
 
-const List<String> numberStrings = [
-  'zero', // Added so index position in list matches the number as String
-  'one',
-  'two',
-  'three',
-  'four',
-  'five',
-  'six',
-  'seven',
-  'eight',
-  'nine',
-];
+  listA.sort();
+  listB.sort();
 
-int solveB(Iterable<String> input) => input.map((line) {
-      int? firstDigit;
-      int? secondDigit;
+  var distanceSum = 0;
 
-      for (var i = 0; i < line.length; i++) {
-        int? parsed = int.tryParse(line[i]);
+  for (final (index, valueA) in listA.indexed) {
+    distanceSum += (valueA - listB[index]).abs();
+  }
 
-        if (parsed != null) {
-          if (firstDigit == null) {
-            firstDigit = parsed;
-          } else {
-            secondDigit = parsed;
-          }
-        } else {
-          for (final (int value, String string) in numberStrings.indexed) {
-            if (i + string.length - 1 < line.length &&
-                line.substring(i, i + string.length) == string) {
-              if (firstDigit == null) {
-                firstDigit = value;
-              } else {
-                secondDigit = value;
-              }
-            }
-          }
-        }
-      }
+  return distanceSum;
+}
 
-      secondDigit ??= firstDigit;
+int solveB(Iterable<String> input) {
+  final listA = <int>[];
+  final countMapB = <int, int>{};
 
-      return int.parse('$firstDigit$secondDigit');
-    }).sum;
+  for (final line in input) {
+    final [valueA, valueB] = line.split('   ');
+    listA.add(int.parse(valueA));
+    countMapB.update(int.parse(valueB), (i) => i + 1, ifAbsent: () => 1);
+  }
+
+  return listA.map((valueA) => valueA * (countMapB[valueA] ?? 0)).sum;
+}
