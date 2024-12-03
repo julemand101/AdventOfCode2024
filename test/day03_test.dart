@@ -3,7 +3,6 @@
 
 import 'dart:io';
 import 'package:advent_of_code_2024/day03.dart';
-import 'package:advent_of_code_2024/util.dart';
 import 'package:test/test.dart';
 
 final input = File('test/data/day03.txt').readAsStringSync();
