@@ -41,7 +41,6 @@ int solveA(List<String> input) {
       if (grid.get(x, y) == letterX) {
         // horizontal
         if (checkWord(
-          grid.get(x, y),
           grid.get(x + 1, y),
           grid.get(x + 2, y),
           grid.get(x + 3, y),
@@ -49,7 +48,6 @@ int solveA(List<String> input) {
           xmasCount++;
         }
         if (checkWord(
-          grid.get(x, y),
           grid.get(x - 1, y),
           grid.get(x - 2, y),
           grid.get(x - 3, y),
@@ -59,7 +57,6 @@ int solveA(List<String> input) {
 
         // vertical
         if (checkWord(
-          grid.get(x, y),
           grid.get(x, y + 1),
           grid.get(x, y + 2),
           grid.get(x, y + 3),
@@ -67,7 +64,6 @@ int solveA(List<String> input) {
           xmasCount++;
         }
         if (checkWord(
-          grid.get(x, y),
           grid.get(x, y - 1),
           grid.get(x, y - 2),
           grid.get(x, y - 3),
@@ -77,7 +73,6 @@ int solveA(List<String> input) {
 
         // diagonal
         if (checkWord(
-          grid.get(x, y),
           grid.get(x + 1, y + 1),
           grid.get(x + 2, y + 2),
           grid.get(x + 3, y + 3),
@@ -85,7 +80,6 @@ int solveA(List<String> input) {
           xmasCount++;
         }
         if (checkWord(
-          grid.get(x, y),
           grid.get(x - 1, y - 1),
           grid.get(x - 2, y - 2),
           grid.get(x - 3, y - 3),
@@ -93,7 +87,6 @@ int solveA(List<String> input) {
           xmasCount++;
         }
         if (checkWord(
-          grid.get(x, y),
           grid.get(x + 1, y - 1),
           grid.get(x + 2, y - 2),
           grid.get(x + 3, y - 3),
@@ -101,7 +94,6 @@ int solveA(List<String> input) {
           xmasCount++;
         }
         if (checkWord(
-          grid.get(x, y),
           grid.get(x - 1, y + 1),
           grid.get(x - 2, y + 2),
           grid.get(x - 3, y + 3),
@@ -115,20 +107,9 @@ int solveA(List<String> input) {
   return xmasCount;
 }
 
-bool checkWord(
-  int? letter1,
-  int? letter2,
-  int? letter3,
-  int? letter4,
-) =>
-    (letter1 == letterX &&
-        letter2 == letterM &&
-        letter3 == letterA &&
-        letter4 == letterS) ||
-    (letter1 == letterS &&
-        letter2 == letterA &&
-        letter3 == letterM &&
-        letter4 == letterX);
+// First letter have already been checked to be `X`
+bool checkWord(int? letter2, int? letter3, int? letter4) =>
+    letter2 == letterM && letter3 == letterA && letter4 == letterS;
 
 int solveB(List<String> input) {
   final grid = Grid(input.first.length, input.length)..setFromInput(input);
@@ -142,22 +123,19 @@ int solveB(List<String> input) {
           grid.get(x, y + 2) == letterM &&
           grid.get(x + 2, y + 2) == letterS) {
         xmasCount++;
-      }
-      if (grid.get(x, y) == letterS &&
+      } else if (grid.get(x, y) == letterS &&
           grid.get(x + 2, y) == letterS &&
           grid.get(x + 1, y + 1) == letterA &&
           grid.get(x, y + 2) == letterM &&
           grid.get(x + 2, y + 2) == letterM) {
         xmasCount++;
-      }
-      if (grid.get(x, y) == letterM &&
+      } else if (grid.get(x, y) == letterM &&
           grid.get(x + 2, y) == letterM &&
           grid.get(x + 1, y + 1) == letterA &&
           grid.get(x, y + 2) == letterS &&
           grid.get(x + 2, y + 2) == letterS) {
         xmasCount++;
-      }
-      if (grid.get(x, y) == letterS &&
+      } else if (grid.get(x, y) == letterS &&
           grid.get(x + 2, y) == letterM &&
           grid.get(x + 1, y + 1) == letterA &&
           grid.get(x, y + 2) == letterS &&
