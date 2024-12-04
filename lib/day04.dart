@@ -1,93 +1,110 @@
 // --- Day 4: Ceres Search ---
 // https://adventofcode.com/2024/day/4
 
-import 'dart:math';
+import 'dart:typed_data';
 
-int solveA(Iterable<String> input) {
-  final grid = <(int x, int y), String>{};
-  var maxX = 0;
-  var maxY = 0;
+// ASCII values
+const int letterX = 88;
+const int letterM = 77;
+const int letterA = 65;
+const int letterS = 83;
 
-  for (final (y, line) in input.indexed) {
-    maxY = max(maxY, y);
+class Grid {
+  final int length, height;
+  final Uint8List _list;
 
-    for (final (x, letter) in line.split('').indexed) {
-      maxX = max(maxX, x);
-      grid[(x, y)] = letter;
+  Grid(this.length, this.height) : _list = Uint8List(length * height);
+
+  int? get(int x, int y) => (x >= 0 && x < length && y >= 0 && y < height)
+      ? _list[_getPos(x, y)]
+      : null;
+
+  void set(int x, int y, int value) => _list[_getPos(x, y)] = value;
+
+  int _getPos(int x, int y) => x + (y * length);
+
+  void setFromInput(List<String> input) {
+    for (final (y, line) in input.indexed) {
+      for (var x = 0; x < line.length; x++) {
+        set(x, y, line.codeUnitAt(x));
+      }
     }
   }
+}
 
+int solveA(List<String> input) {
+  final grid = Grid(input.first.length, input.length)..setFromInput(input);
   var xmasCount = 0;
 
-  for (var y = 0; y <= maxY; y++) {
-    for (var x = 0; x <= maxX; x++) {
-      if (grid[(x, y)] == 'X') {
+  for (var y = 0; y <= grid.height; y++) {
+    for (var x = 0; x <= grid.length; x++) {
+      if (grid.get(x, y) == letterX) {
         // horizontal
         if (checkWord(
-          grid[(x, y)],
-          grid[(x + 1, y)],
-          grid[(x + 2, y)],
-          grid[(x + 3, y)],
+          grid.get(x, y),
+          grid.get(x + 1, y),
+          grid.get(x + 2, y),
+          grid.get(x + 3, y),
         )) {
           xmasCount++;
         }
         if (checkWord(
-          grid[(x, y)],
-          grid[(x - 1, y)],
-          grid[(x - 2, y)],
-          grid[(x - 3, y)],
+          grid.get(x, y),
+          grid.get(x - 1, y),
+          grid.get(x - 2, y),
+          grid.get(x - 3, y),
         )) {
           xmasCount++;
         }
 
         // vertical
         if (checkWord(
-          grid[(x, y)],
-          grid[(x, y + 1)],
-          grid[(x, y + 2)],
-          grid[(x, y + 3)],
+          grid.get(x, y),
+          grid.get(x, y + 1),
+          grid.get(x, y + 2),
+          grid.get(x, y + 3),
         )) {
           xmasCount++;
         }
         if (checkWord(
-          grid[(x, y)],
-          grid[(x, y - 1)],
-          grid[(x, y - 2)],
-          grid[(x, y - 3)],
+          grid.get(x, y),
+          grid.get(x, y - 1),
+          grid.get(x, y - 2),
+          grid.get(x, y - 3),
         )) {
           xmasCount++;
         }
 
         // diagonal
         if (checkWord(
-          grid[(x, y)],
-          grid[(x + 1, y + 1)],
-          grid[(x + 2, y + 2)],
-          grid[(x + 3, y + 3)],
+          grid.get(x, y),
+          grid.get(x + 1, y + 1),
+          grid.get(x + 2, y + 2),
+          grid.get(x + 3, y + 3),
         )) {
           xmasCount++;
         }
         if (checkWord(
-          grid[(x, y)],
-          grid[(x - 1, y - 1)],
-          grid[(x - 2, y - 2)],
-          grid[(x - 3, y - 3)],
+          grid.get(x, y),
+          grid.get(x - 1, y - 1),
+          grid.get(x - 2, y - 2),
+          grid.get(x - 3, y - 3),
         )) {
           xmasCount++;
         }
         if (checkWord(
-          grid[(x, y)],
-          grid[(x + 1, y - 1)],
-          grid[(x + 2, y - 2)],
-          grid[(x + 3, y - 3)],
+          grid.get(x, y),
+          grid.get(x + 1, y - 1),
+          grid.get(x + 2, y - 2),
+          grid.get(x + 3, y - 3),
         )) {
           xmasCount++;
         }
         if (checkWord(
-          grid[(x, y)],
-          grid[(x - 1, y + 1)],
-          grid[(x - 2, y + 2)],
-          grid[(x - 3, y + 3)],
+          grid.get(x, y),
+          grid.get(x - 1, y + 1),
+          grid.get(x - 2, y + 2),
+          grid.get(x - 3, y + 3),
         )) {
           xmasCount++;
         }
@@ -99,58 +116,52 @@ int solveA(Iterable<String> input) {
 }
 
 bool checkWord(
-  String? letter1,
-  String? letter2,
-  String? letter3,
-  String? letter4,
+  int? letter1,
+  int? letter2,
+  int? letter3,
+  int? letter4,
 ) =>
-    (letter1 == 'X' && letter2 == 'M' && letter3 == 'A' && letter4 == 'S') ||
-    (letter1 == 'S' && letter2 == 'A' && letter3 == 'M' && letter4 == 'X');
+    (letter1 == letterX &&
+        letter2 == letterM &&
+        letter3 == letterA &&
+        letter4 == letterS) ||
+    (letter1 == letterS &&
+        letter2 == letterA &&
+        letter3 == letterM &&
+        letter4 == letterX);
 
-int solveB(Iterable<String> input) {
-  final grid = <(int x, int y), String>{};
-  var maxX = 0;
-  var maxY = 0;
-
-  for (final (y, line) in input.indexed) {
-    maxY = max(maxY, y);
-
-    for (final (x, letter) in line.split('').indexed) {
-      maxX = max(maxX, x);
-      grid[(x, y)] = letter;
-    }
-  }
-
+int solveB(List<String> input) {
+  final grid = Grid(input.first.length, input.length)..setFromInput(input);
   var xmasCount = 0;
 
-  for (var y = 0; y <= maxY; y++) {
-    for (var x = 0; x <= maxX; x++) {
-      if (grid[(x, y)] == 'M' &&
-          grid[(x + 2, y)] == 'S' &&
-          grid[(x + 1, y + 1)] == 'A' &&
-          grid[(x, y + 2)] == 'M' &&
-          grid[(x + 2, y + 2)] == 'S') {
+  for (var y = 0; y <= grid.height; y++) {
+    for (var x = 0; x <= grid.length; x++) {
+      if (grid.get(x, y) == letterM &&
+          grid.get(x + 2, y) == letterS &&
+          grid.get(x + 1, y + 1) == letterA &&
+          grid.get(x, y + 2) == letterM &&
+          grid.get(x + 2, y + 2) == letterS) {
         xmasCount++;
       }
-      if (grid[(x, y)] == 'S' &&
-          grid[(x + 2, y)] == 'S' &&
-          grid[(x + 1, y + 1)] == 'A' &&
-          grid[(x, y + 2)] == 'M' &&
-          grid[(x + 2, y + 2)] == 'M') {
+      if (grid.get(x, y) == letterS &&
+          grid.get(x + 2, y) == letterS &&
+          grid.get(x + 1, y + 1) == letterA &&
+          grid.get(x, y + 2) == letterM &&
+          grid.get(x + 2, y + 2) == letterM) {
         xmasCount++;
       }
-      if (grid[(x, y)] == 'M' &&
-          grid[(x + 2, y)] == 'M' &&
-          grid[(x + 1, y + 1)] == 'A' &&
-          grid[(x, y + 2)] == 'S' &&
-          grid[(x + 2, y + 2)] == 'S') {
+      if (grid.get(x, y) == letterM &&
+          grid.get(x + 2, y) == letterM &&
+          grid.get(x + 1, y + 1) == letterA &&
+          grid.get(x, y + 2) == letterS &&
+          grid.get(x + 2, y + 2) == letterS) {
         xmasCount++;
       }
-      if (grid[(x, y)] == 'S' &&
-          grid[(x + 2, y)] == 'M' &&
-          grid[(x + 1, y + 1)] == 'A' &&
-          grid[(x, y + 2)] == 'S' &&
-          grid[(x + 2, y + 2)] == 'M') {
+      if (grid.get(x, y) == letterS &&
+          grid.get(x + 2, y) == letterM &&
+          grid.get(x + 1, y + 1) == letterA &&
+          grid.get(x, y + 2) == letterS &&
+          grid.get(x + 2, y + 2) == letterM) {
         xmasCount++;
       }
     }

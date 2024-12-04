@@ -24,7 +24,7 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
 '''
-              .asLines),
+              .toLinesList()),
           equals(18));
     });
     test('Solution', () {
@@ -46,7 +46,7 @@ SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
 '''
-              .asLines),
+              .toLinesList()),
           equals(9));
     });
     test('Solution', () {
