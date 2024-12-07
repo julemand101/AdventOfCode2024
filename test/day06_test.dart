@@ -32,9 +32,9 @@ void main() {
     });
   });
   group('Part Two', () {
-    test('Example 1', () {
+    test('Example 1', () async {
       expect(
-          solveB(r'''
+          await solveB(r'''
 ....#.....
 .........#
 ..........
@@ -49,8 +49,8 @@ void main() {
               .toLinesList()),
           equals(6));
     });
-    test('Solution', () {
-      expect(solveB(input), equals(1443));
+    test('Solution', () async {
+      expect(await solveB(input), equals(1443));
     });
   });
 }

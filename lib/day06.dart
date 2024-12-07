@@ -1,7 +1,11 @@
 // --- Day 6: Guard Gallivant ---
 // https://adventofcode.com/2024/day/6
 
+import 'dart:io';
+import 'dart:isolate';
 import 'dart:typed_data';
+
+import 'package:collection/collection.dart';
 
 const guardChar = 94; // ^
 const emptyChar = 46; // .
@@ -21,48 +25,57 @@ const movements = [
 int solveA(List<String> input) =>
     getDistinctPositions(input).distinctPositions.length;
 
-int solveB(List<String> input) {
+Future<int> solveB(List<String> input) async {
   final (:distinctPositions, :grid) = getDistinctPositions(input);
 
-  // Now contains places we can place obstacles
+  // We can't place obstacle where guard are starting
   distinctPositions.remove(grid.guardStartingPoint);
-  var loopPositions = 0;
+  final jobsPerCore = distinctPositions.length ~/ Platform.numberOfProcessors;
 
-  for (final distinctPosition in distinctPositions) {
-    // Put obstacle at position
-    grid.setByPoint(distinctPosition, obstructionChar);
+  return (await [
+    for (final positionsToCheck in distinctPositions.slices(jobsPerCore + 1))
+      Isolate.run(() {
+        var loopPositions = 0;
 
-    // Point and direction set. If we detect the same combo, we are in loop
-    final loopDetect = <(Point, int)>{};
-    var guardPosition = grid.guardStartingPoint;
-    var direction = 0;
+        for (final distinctPosition in positionsToCheck) {
+          // Put obstacle at position
+          grid.setByPoint(distinctPosition, obstructionChar);
 
-    while (true) {
-      if (!loopDetect.add((guardPosition, direction))) {
-        loopPositions++;
-        break;
-      }
+          // Point and direction set.
+          // If we detect the same combo, we are in a loop
+          final loopDetect = <(Point, int)>{};
+          var guardPosition = grid.guardStartingPoint;
+          var direction = 0;
 
-      final nextGuardPosition = guardPosition + movements[direction];
-      final objectOnNewPosition = grid.getByPoint(nextGuardPosition);
+          while (true) {
+            if (!loopDetect.add((guardPosition, direction))) {
+              loopPositions++;
+              break;
+            }
 
-      if (objectOnNewPosition == null) {
-        // Hit outside of grid which means we are done
-        break;
-      } else if (objectOnNewPosition == obstructionChar) {
-        // Hit obstacle so rotate
-        direction = (direction + 1) % movements.length;
-      } else {
-        // Move to free space
-        guardPosition = nextGuardPosition;
-      }
-    }
+            final nextGuardPosition = guardPosition + movements[direction];
+            final objectOnNewPosition = grid.getByPoint(nextGuardPosition);
 
-    // Reset grid back to original map
-    grid.setByPoint(distinctPosition, emptyChar);
-  }
+            if (objectOnNewPosition == null) {
+              // Hit outside of grid which means we are done
+              break;
+            } else if (objectOnNewPosition == obstructionChar) {
+              // Hit obstacle so rotate
+              direction = (direction + 1) % movements.length;
+            } else {
+              // Move to free space
+              guardPosition = nextGuardPosition;
+            }
+          }
 
-  return loopPositions;
+          // Reset grid back to original map
+          grid.setByPoint(distinctPosition, emptyChar);
+        }
+
+        return loopPositions;
+      }),
+  ].wait)
+      .sum;
 }
 
 ({Set<Point> distinctPositions, Grid grid}) getDistinctPositions(
