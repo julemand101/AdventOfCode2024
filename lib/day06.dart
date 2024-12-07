@@ -1,6 +1,7 @@
 // --- Day 6: Guard Gallivant ---
 // https://adventofcode.com/2024/day/6
 
+import 'dart:collection';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:typed_data';
@@ -43,7 +44,7 @@ Future<int> solveB(List<String> input) async {
 
           // Point and direction set.
           // If we detect the same combo, we are in a loop
-          final loopDetect = <(Point, int)>{};
+          final loopDetect = HashSet<(Point, int)>();
           var guardPosition = grid.guardStartingPoint;
           var direction = 0;
 
@@ -82,7 +83,7 @@ Future<int> solveB(List<String> input) async {
   List<String> input,
 ) {
   final grid = Grid(input.first.length, input.length)..setFromInput(input);
-  final distinctPositions = <Point>{};
+  final distinctPositions = HashSet<Point>();
 
   var guardPosition = grid.guardStartingPoint;
   var direction = 0;
