@@ -49,11 +49,6 @@ Future<int> solveB(List<String> input) async {
           var direction = 0;
 
           while (true) {
-            if (!loopDetect.add((guardPosition, direction))) {
-              loopPositions++;
-              break;
-            }
-
             final nextGuardPosition = guardPosition + movements[direction];
             final objectOnNewPosition = grid.getByPoint(nextGuardPosition);
 
@@ -61,6 +56,12 @@ Future<int> solveB(List<String> input) async {
               // Hit outside of grid which means we are done
               break;
             } else if (objectOnNewPosition == obstructionChar) {
+              // Check if we are looping
+              if (!loopDetect.add((guardPosition, direction))) {
+                loopPositions++;
+                break;
+              }
+
               // Hit obstacle so rotate
               direction = (direction + 1) % movements.length;
             } else {
