@@ -18,7 +18,56 @@ const movements = [
   Point(-1, 0),
 ];
 
-int solveA(List<String> input) {
+int solveA(List<String> input) =>
+    getDistinctPositions(input).distinctPositions.length;
+
+int solveB(List<String> input) {
+  final (:distinctPositions, :grid) = getDistinctPositions(input);
+
+  // Now contains places we can place obstacles
+  distinctPositions.remove(grid.guardStartingPoint);
+  var loopPositions = 0;
+
+  for (final distinctPosition in distinctPositions) {
+    // Put obstacle at position
+    grid.setByPoint(distinctPosition, obstructionChar);
+
+    // Point and direction set. If we detect the same combo, we are in loop
+    final loopDetect = <(Point, int)>{};
+    var guardPosition = grid.guardStartingPoint;
+    var direction = 0;
+
+    while (true) {
+      if (!loopDetect.add((guardPosition, direction))) {
+        loopPositions++;
+        break;
+      }
+
+      final nextGuardPosition = guardPosition + movements[direction];
+      final objectOnNewPosition = grid.getByPoint(nextGuardPosition);
+
+      if (objectOnNewPosition == null) {
+        // Hit outside of grid which means we are done
+        break;
+      } else if (objectOnNewPosition == obstructionChar) {
+        // Hit obstacle so rotate
+        direction = (direction + 1) % movements.length;
+      } else {
+        // Move to free space
+        guardPosition = nextGuardPosition;
+      }
+    }
+
+    // Reset grid back to original map
+    grid.setByPoint(distinctPosition, emptyChar);
+  }
+
+  return loopPositions;
+}
+
+({Set<Point> distinctPositions, Grid grid}) getDistinctPositions(
+  List<String> input,
+) {
   final grid = Grid(input.first.length, input.length)..setFromInput(input);
   final distinctPositions = <Point>{};
 
@@ -43,11 +92,7 @@ int solveA(List<String> input) {
     }
   }
 
-  return distinctPositions.length;
-}
-
-int solveB(List<String> input) {
-  return 0;
+  return (distinctPositions: distinctPositions, grid: grid);
 }
 
 extension type const Point._(({int x, int y}) _point) {

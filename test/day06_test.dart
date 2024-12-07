@@ -50,7 +50,7 @@ void main() {
           equals(6));
     });
     test('Solution', () {
-      expect(solveB(input), equals(-1));
+      expect(solveB(input), equals(1443));
     });
-  }, skip: true);
+  });
 }
