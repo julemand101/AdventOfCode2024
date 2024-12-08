@@ -12,9 +12,9 @@ int solveA(Iterable<String> input) {
   for (final line in input) {
     final [testValueString, rest] = line.split(': ');
     final testValue = int.parse(testValueString);
-    final numbers = [...rest.split(' ').reversed.map(int.parse)];
+    final numbers = [...rest.split(' ').map(int.parse)];
 
-    if (tryOperators1(numbers, testValue, 0).contains(testValue)) {
+    if (tryOperators(numbers, testValue, partB: false)) {
       totalCalibrationResult += testValue;
     }
   }
@@ -44,9 +44,9 @@ Future<int> solveB(List<String> input) async {
         for (final line in lines) {
           final [testValueString, rest] = line.split(': ');
           final testValue = int.parse(testValueString);
-          final numbers = [...rest.split(' ').reversed.map(int.parse)];
+          final numbers = [...rest.split(' ').map(int.parse)];
 
-          if (tryOperators2(numbers, testValue, 0).contains(testValue)) {
+          if (tryOperators(numbers, testValue, partB: true)) {
             totalCalibrationResult += testValue;
           }
         }
@@ -57,15 +57,39 @@ Future<int> solveB(List<String> input) async {
       .sum;
 }
 
-Iterable<int> tryOperators2(List<int> numbers, int target, int pos) sync* {
-  if (pos == numbers.length - 1) {
-    yield numbers.last;
-  } else {
-    yield* tryOperators2(numbers, target, pos + 1)
-        .map((value) => value + numbers[pos]);
-    yield* tryOperators2(numbers, target, pos + 1)
-        .map((value) => value * numbers[pos]);
-    yield* tryOperators2(numbers, target, pos + 1)
-        .map((value) => int.parse('$value${numbers[pos]}'));
+bool tryOperators(
+  List<int> numbers,
+  int target, {
+  int result = 0,
+  int pos = 0,
+  required bool partB,
+}) {
+  if (result > target) {
+    return false;
   }
+  if (pos == numbers.length) {
+    return target == result;
+  }
+  return tryOperators(
+        numbers,
+        target,
+        result: numbers[pos] + result,
+        pos: pos + 1,
+        partB: partB,
+      ) ||
+      tryOperators(
+        numbers,
+        target,
+        result: numbers[pos] * result,
+        pos: pos + 1,
+        partB: partB,
+      ) ||
+      (partB &&
+          tryOperators(
+            numbers,
+            target,
+            result: int.parse('$result${numbers[pos]}'),
+            pos: pos + 1,
+            partB: partB,
+          ));
 }
