@@ -31,9 +31,9 @@ void main() {
     });
   });
   group('Part Two', () {
-    test('Example 1', () async {
+    test('Example 1', () {
       expect(
-          await solveB(r'''
+          solveB(r'''
 190: 10 19
 3267: 81 40 27
 83: 17 5
@@ -44,11 +44,11 @@ void main() {
 21037: 9 7 18 13
 292: 11 6 16 20
 '''
-              .toLinesList()),
+              .asLines),
           equals(11387));
     });
-    test('Solution', () async {
-      expect(await solveB(input), equals(401477450831495));
+    test('Solution', () {
+      expect(solveB(input), equals(401477450831495));
     });
   });
 }

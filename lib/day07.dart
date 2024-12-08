@@ -1,12 +1,10 @@
 // --- Day 7: Bridge Repair ---
 // https://adventofcode.com/2024/day/7
 
-import 'dart:io';
-import 'dart:isolate';
+int solveA(Iterable<String> input) => solve(input, partB: false);
+int solveB(Iterable<String> input) => solve(input, partB: true);
 
-import 'package:collection/collection.dart';
-
-int solveA(Iterable<String> input) {
+int solve(Iterable<String> input, {required bool partB}) {
   var totalCalibrationResult = 0;
 
   for (final line in input) {
@@ -14,47 +12,12 @@ int solveA(Iterable<String> input) {
     final testValue = int.parse(testValueString);
     final numbers = [...rest.split(' ').map(int.parse)];
 
-    if (tryOperators(numbers, testValue, partB: false)) {
+    if (tryOperators(numbers, testValue, partB: partB)) {
       totalCalibrationResult += testValue;
     }
   }
 
   return totalCalibrationResult;
-}
-
-Iterable<int> tryOperators1(List<int> numbers, int target, int pos) sync* {
-  if (pos == numbers.length - 1) {
-    yield numbers.last;
-  } else {
-    yield* tryOperators1(numbers, target, pos + 1)
-        .map((value) => value + numbers[pos]);
-    yield* tryOperators1(numbers, target, pos + 1)
-        .map((value) => value * numbers[pos]);
-  }
-}
-
-Future<int> solveB(List<String> input) async {
-  final jobsPerCore = input.length ~/ Platform.numberOfProcessors;
-
-  return (await [
-    for (final lines in input.slices(jobsPerCore + 1))
-      Isolate.run(() {
-        var totalCalibrationResult = 0;
-
-        for (final line in lines) {
-          final [testValueString, rest] = line.split(': ');
-          final testValue = int.parse(testValueString);
-          final numbers = [...rest.split(' ').map(int.parse)];
-
-          if (tryOperators(numbers, testValue, partB: true)) {
-            totalCalibrationResult += testValue;
-          }
-        }
-
-        return totalCalibrationResult;
-      }),
-  ].wait)
-      .sum;
 }
 
 bool tryOperators(
