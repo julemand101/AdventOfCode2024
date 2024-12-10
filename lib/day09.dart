@@ -4,30 +4,29 @@
 import 'package:collection/collection.dart';
 
 int solveA(String input) {
-  final disk = <int>[]; // -1 means empty
-  var id = 0;
-  var file = true;
+  final disk = <int?>[];
 
-  for (final diskMap in input.split('').map(int.parse)) {
-    if (file) {
-      for (var i = 0; i < diskMap; i++) {
+  for (var i = 0, id = 0; i < input.length; i++) {
+    var digit = int.parse(input[i]);
+
+    if (i % 2 == 0) {
+      for (var k = 0; k < digit; k++) {
         disk.add(id);
       }
       id++;
-      file = false;
     } else {
-      for (var i = 0; i < diskMap; i++) {
-        disk.add(-1);
+      for (var k = 0; k < digit; k++) {
+        disk.add(null);
       }
-      file = true;
     }
   }
 
+  // Cache the last found index since next search for free space can start
+  // from here and be more efficient
+  var freeSpaceIndex = 0;
   for (var i = disk.length - 1; i >= 0; i--) {
-    if (disk[i] != -1) {
-      final freeSpaceIndex = disk.indexOf(-1);
-
-      if (freeSpaceIndex >= i) {
+    if (disk[i] != null) {
+      if ((freeSpaceIndex = disk.indexOf(null, freeSpaceIndex + 1)) >= i) {
         break;
       }
 
@@ -35,26 +34,23 @@ int solveA(String input) {
     }
   }
 
-  return disk.where((i) => i != -1).indexed.map((e) => e.$1 * e.$2).sum;
+  return disk.whereType<int>().indexed.map((e) => e.$1 * e.$2).sum;
 }
 
 int solveB(String input) {
   final disk = <int>[]; // -1 means empty
   var id = 0;
-  var file = true;
 
-  for (final diskMap in input.split('').map(int.parse)) {
-    if (file) {
+  for (final (index, diskMap) in input.split('').map(int.parse).indexed) {
+    if (index % 2 == 0) {
       for (var i = 0; i < diskMap; i++) {
         disk.add(id);
       }
       id++;
-      file = false;
     } else {
       for (var i = 0; i < diskMap; i++) {
         disk.add(-1);
       }
-      file = true;
     }
   }
 
