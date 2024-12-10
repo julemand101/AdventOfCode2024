@@ -4,32 +4,31 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-int solveA(List<String> input) {
+import 'package:collection/collection.dart';
+
+int solveA(List<String> input) => solve(input, partB: false);
+int solveB(List<String> input) => solve(input, partB: true);
+
+int solve(List<String> input, {required bool partB}) {
   final grid = Grid(input.first.length + 2, input.length + 2)
     ..setFromInput(input, padding: 1);
-  var sum = 0;
 
-  for (final startingPosition in grid.zeroPositions) {
-    sum += reachTop(grid, startingPosition, 0, HashSet());
-  }
-
-  return sum;
+  return grid.zeroPositions
+      .map((startingPosition) =>
+          reachTop(grid, startingPosition, 0, partB ? null : HashSet()))
+      .sum;
 }
 
-int solveB(List<String> input) {
-  return 0;
-}
-
-final Point up = Point(0, -1);
-final Point right = Point(1, 0);
-final Point down = Point(0, 1);
-final Point left = Point(-1, 0);
+const Point up = Point(0, -1);
+const Point right = Point(1, 0);
+const Point down = Point(0, 1);
+const Point left = Point(-1, 0);
 
 int reachTop(
   Grid grid,
   Point currentPosition,
   int nextLevel,
-  Set<Point> visitedBefore,
+  Set<Point>? visitedBefore,
 ) {
   final currentValue = grid.getByPoint(currentPosition);
 
@@ -38,7 +37,7 @@ int reachTop(
   }
 
   if (currentValue == 9) {
-    return visitedBefore.add(currentPosition) ? 1 : 0;
+    return (visitedBefore?.add(currentPosition) ?? true) ? 1 : 0;
   }
 
   return reachTop(grid, currentPosition + up, nextLevel + 1, visitedBefore) +

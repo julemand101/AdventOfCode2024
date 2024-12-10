@@ -85,7 +85,7 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+          solveB(r'''
 .....0.
 ..4321.
 ..5..2.
@@ -99,7 +99,7 @@ void main() {
     });
     test('Example 2', () {
       expect(
-          solveA(r'''
+          solveB(r'''
 ..90..9
 ...1.98
 ...2..7
@@ -113,7 +113,7 @@ void main() {
     });
     test('Example 3', () {
       expect(
-          solveA(r'''
+          solveB(r'''
 012345
 123456
 234567
@@ -126,7 +126,7 @@ void main() {
     });
     test('Example 4', () {
       expect(
-          solveA(r'''
+          solveB(r'''
 89010123
 78121874
 87430965
@@ -140,7 +140,7 @@ void main() {
           equals(81));
     });
     test('Solution', () {
-      expect(solveB(input), equals(-1));
+      expect(solveB(input), equals(1302));
     });
-  }, skip: true);
+  });
 }
