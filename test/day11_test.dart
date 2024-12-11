@@ -27,7 +27,7 @@ void main() {
   });
   group('Part Two', () {
     test('Solution', () {
-      expect(solveB(input), equals(-1));
+      expect(solveB(input), equals(229557103025807));
     });
-  }, skip: true);
+  });
 }
