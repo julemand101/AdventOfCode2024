@@ -18,7 +18,7 @@ BBCD
 BBCC
 EEEC
 '''
-              .asLines),
+              .toLinesList()),
           equals(140));
     });
     test('Example 2', () {
@@ -30,7 +30,7 @@ OOOOO
 OXOXO
 OOOOO
 '''
-              .asLines),
+              .toLinesList()),
           equals(772));
     });
     test('Example 3', () {
@@ -47,11 +47,11 @@ MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE
 '''
-              .asLines),
+              .toLinesList()),
           equals(1930));
     });
     test('Solution', () {
-      expect(solveA(input), equals(-1));
+      expect(solveA(input), equals(1387004));
     });
-  }, skip: true);
+  });
 }
