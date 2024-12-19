@@ -6,52 +6,54 @@ import 'dart:typed_data';
 
 int solveA(List<String> input) {
   final grid = Grid(input);
+  final todoQueue = Queue<Point>()..add(Point(0, 0));
+  final pointsAlreadyPartOfGroupSet = HashSet<Point>();
+  var sum = 0;
 
-  Queue<Point> todo = Queue()..add(Point(0, 0));
-  Set<Point> pointsAlreadyPartOfGroup = HashSet();
-  List<List<Point>> groups = [];
+  while (todoQueue.isNotEmpty) {
+    final currentPoint = todoQueue.removeFirst();
 
-  while (todo.isNotEmpty) {
-    final currentPoint = todo.removeFirst();
-
-    if (pointsAlreadyPartOfGroup.contains(currentPoint)) {
+    if (pointsAlreadyPartOfGroupSet.contains(currentPoint)) {
       continue;
     }
 
-    final result =
-        scan(currentPoint, grid.getByPoint(currentPoint), grid, todo, {})
-            .toList();
-    groups.add(result);
-
-    pointsAlreadyPartOfGroup.addAll(result);
-  }
-
-  var sum = 0;
-  for (final group in groups) {
     var fences = 0;
+    var plots = 0;
+    for (final plotPoint in scan(
+      currentPoint,
+      grid.getByPoint(currentPoint),
+      grid,
+      todoQueue,
+      pointsAlreadyPartOfGroupSet,
+    )) {
+      pointsAlreadyPartOfGroupSet.add(plotPoint);
+      plots++;
 
-    for (final point in group) {
-      final currentChar = grid.getByPoint(point);
+      final currentChar = grid.getByPoint(plotPoint);
 
+      // Scan neighbours
       for (final scan in scanningList) {
-        if (grid.getByPoint(point + scan) != currentChar) {
+        // If neighbour are stranger, then we put up a fence
+        if (grid.getByPoint(plotPoint + scan) != currentChar) {
           fences++;
         }
       }
     }
 
-    sum += (fences * group.length);
+    sum += fences * plots;
   }
 
   return sum;
 }
 
-List<Point> scanningList = const [
+const scanningList = [
   Point(0, -1), // up
   Point(1, 0), // right
   Point(0, 1), // down
   Point(-1, 0), // left
 ];
+
+const outsideGrid = 0;
 
 Iterable<Point> scan(
   Point currentPoint,
@@ -60,18 +62,16 @@ Iterable<Point> scan(
   Queue<Point> todo,
   Set<Point> history,
 ) sync* {
-  if (!history.add(currentPoint)) {
-    return;
-  }
-
   final currentValue = grid.getByPoint(currentPoint);
 
-  if (currentValue == 0) {
+  if (currentValue == outsideGrid) {
     return;
   }
-
   if (currentValue != lookFor) {
     todo.add(currentPoint);
+    return;
+  }
+  if (!history.add(currentPoint)) {
     return;
   }
 
@@ -115,8 +115,9 @@ class Grid {
   }
 
   int getByPoint(Point p) => get(p.x, p.y);
-  int get(int x, int y) =>
-      (x < 0 || y < 0 || x >= length || y >= height) ? 0 : _list[_getPos(x, y)];
+  int get(int x, int y) => (x < 0 || y < 0 || x >= length || y >= height)
+      ? outsideGrid
+      : _list[_getPos(x, y)];
 
   void setByPoint(Point p, int value) => set(p.x, p.y, value);
   void set(int x, int y, int value) => _list[_getPos(x, y)] = value;
