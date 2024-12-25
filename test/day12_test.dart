@@ -54,4 +54,74 @@ MMMISSJEEE
       expect(solveA(input), equals(1387004));
     });
   });
+  group('Part Two', () {
+    test('Example 1', () {
+      expect(
+          solveB(r'''
+AAAA
+BBCD
+BBCC
+EEEC
+'''
+              .toLinesList()),
+          equals(80));
+    });
+    test('Example 2', () {
+      expect(
+          solveB(r'''
+OOOOO
+OXOXO
+OOOOO
+OXOXO
+OOOOO
+'''
+              .toLinesList()),
+          equals(436));
+    });
+    test('Example 3', () {
+      expect(
+          solveB(r'''
+EEEEE
+EXXXX
+EEEEE
+EXXXX
+EEEEE
+'''
+              .toLinesList()),
+          equals(236));
+    });
+    test('Example 4', () {
+      expect(
+          solveB(r'''
+AAAAAA
+AAABBA
+AAABBA
+ABBAAA
+ABBAAA
+AAAAAA
+'''
+              .toLinesList()),
+          equals(368));
+    });
+    test('Example 5', () {
+      expect(
+          solveB(r'''
+RRRRIICCFF
+RRRRIICCCF
+VVRRRCCFFF
+VVRCCCJFFF
+VVVVCJJCFE
+VVIVCCJJEE
+VVIIICJJEE
+MIIIIIJJEE
+MIIISIJEEE
+MMMISSJEEE
+'''
+              .toLinesList()),
+          equals(1206));
+    });
+    test('Solution', () {
+      expect(solveB(input), equals(844198));
+    });
+  });
 }

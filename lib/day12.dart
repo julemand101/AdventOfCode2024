@@ -4,7 +4,10 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-int solveA(List<String> input) {
+int solveA(List<String> input) => solve(input, partB: false);
+int solveB(List<String> input) => solve(input, partB: true);
+
+int solve(List<String> input, {required bool partB}) {
   final grid = Grid(input);
   final todoQueue = Queue<Point>()..add(Point(0, 0));
   final pointsAlreadyPartOfGroupSet = HashSet<Point>();
@@ -17,7 +20,8 @@ int solveA(List<String> input) {
       continue;
     }
 
-    var fences = 0;
+    var fences = <Fence>{};
+    var sides = 0;
     var plots = 0;
     for (final plotPoint in scan(
       currentPoint,
@@ -35,12 +39,33 @@ int solveA(List<String> input) {
       for (final scan in scanningList) {
         // If neighbour are stranger, then we put up a fence
         if (grid.getByPoint(plotPoint + scan) != currentChar) {
-          fences++;
+          fences.add(Fence(plotPoint, plotPoint + scan));
         }
       }
     }
 
-    sum += fences * plots;
+    if (!partB) {
+      sum += fences.length * plots;
+    } else {
+      void removeAllFenceNeighbours(Fence fence) {
+        for (final scan in scanningList) {
+          final scanFence = fence + scan;
+
+          if (fences.remove(scanFence)) {
+            removeAllFenceNeighbours(scanFence);
+          }
+        }
+      }
+
+      while (fences.isNotEmpty) {
+        final fence = fences.first;
+        fences.remove(fence);
+        removeAllFenceNeighbours(fence);
+        sides++;
+      }
+
+      sum += sides * plots;
+    }
   }
 
   return sum;
@@ -96,6 +121,20 @@ extension type const Point._(({int x, int y}) _point) {
   Point operator -(Point other) => Point(
         x - other.x,
         y - other.y,
+      );
+}
+
+extension type const Fence._((Point, Point) _fence) {
+  const Fence(Point p1, Point p2) : this._((p1, p2));
+
+  Fence operator +(Point other) => Fence(
+        _fence.$1 + other,
+        _fence.$2 + other,
+      );
+
+  Fence operator -(Point other) => Fence(
+        _fence.$1 - other,
+        _fence.$2 - other,
       );
 }
 
