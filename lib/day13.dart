@@ -32,7 +32,7 @@ int solve(Iterable<String> input, {required bool partB}) {
     ];
     final [px, py] = [
       ...prizeRegExp.firstMatch(chunk[2])!.groups(const [1, 2]).map(
-          (s) => int.parse(s!) + (partB ? 10_000_000_000_000 : 0))
+          (s) => int.parse(s!) + (partB ? 10000000000000 : 0))
     ];
 
     final aButton = ((by * px) - (bx * py)) / ((ax * by) - (ay * bx));
