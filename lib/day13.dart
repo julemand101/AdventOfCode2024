@@ -1,8 +1,6 @@
 // --- Day 13: Claw Contraption ---
 // https://adventofcode.com/2024/day/13
 
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 
 final buttonRegExp = RegExp(r'X\+(\d+), Y\+(\d+)');
