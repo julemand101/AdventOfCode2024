@@ -76,4 +76,49 @@ Prize: X=18641, Y=10279
       expect(solveA(input), equals(36571));
     });
   });
+  group('Part Two', () {
+    test('Example 1', () {
+      expect(
+          solveB(r'''
+Button A: X+94, Y+34
+Button B: X+22, Y+67
+Prize: X=8400, Y=5400
+'''
+              .asLines),
+          equals(0));
+    });
+    test('Example 2', () {
+      expect(
+          solveB(r'''
+Button A: X+26, Y+66
+Button B: X+67, Y+21
+Prize: X=12748, Y=12176
+'''
+              .asLines),
+          greaterThan(0));
+    });
+    test('Example 3', () {
+      expect(
+          solveB(r'''
+Button A: X+17, Y+86
+Button B: X+84, Y+37
+Prize: X=7870, Y=6450
+'''
+              .asLines),
+          equals(0));
+    });
+    test('Example 4', () {
+      expect(
+          solveB(r'''
+Button A: X+69, Y+23
+Button B: X+27, Y+71
+Prize: X=18641, Y=10279
+'''
+              .asLines),
+          greaterThan(0));
+    });
+    test('Solution', () {
+      expect(solveB(input), equals(85527711500010));
+    });
+  });
 }

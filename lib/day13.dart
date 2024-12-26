@@ -11,7 +11,10 @@ final prizeRegExp = RegExp(r'X=(\d+), Y=(\d+)');
 const costAButton = 3;
 const costBButton = 1;
 
-int solveA(Iterable<String> input) {
+int solveA(Iterable<String> input) => solve(input, partB: false);
+int solveB(Iterable<String> input) => solve(input, partB: true);
+
+int solve(Iterable<String> input, {required bool partB}) {
   var sum = 0;
 
   for (final chunk in input
@@ -28,25 +31,20 @@ int solveA(Iterable<String> input) {
           .groups(const [1, 2]).map((s) => int.parse(s!))
     ];
     final [px, py] = [
-      ...prizeRegExp
-          .firstMatch(chunk[2])!
-          .groups(const [1, 2]).map((s) => int.parse(s!))
+      ...prizeRegExp.firstMatch(chunk[2])!.groups(const [1, 2]).map(
+          (s) => int.parse(s!) + (partB ? 10_000_000_000_000 : 0))
     ];
 
-    var cost = 0;
-    for (var a = 1; a <= 100; a++) {
-      for (var b = 1; b <= 100; b++) {
-        if ((a * ax) + (b * bx) == px && (a * ay) + (b * by) == py) {
-          if (cost == 0) {
-            cost = (a * costAButton) + (b * costBButton);
-          } else {
-            cost = min(cost, (a * costAButton) + (b * costBButton));
-          }
-        }
-      }
-    }
+    final aButton = ((by * px) - (bx * py)) / ((ax * by) - (ay * bx));
+    final bButton = ((ax * py) - (ay * px)) / ((ax * by) - (ay * bx));
 
-    sum += cost;
+    if (aButton > 0 &&
+        bButton > 0 &&
+        (aButton % 1) == 0 && // Checking if double values are whole
+        (bButton % 1) == 0 &&
+        (partB || (aButton <= 100 && bButton <= 100))) {
+      sum += (aButton.toInt() * costAButton) + (bButton.toInt() * costBButton);
+    }
   }
 
   return sum;
