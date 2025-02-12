@@ -21,122 +21,127 @@ const directionUp = Point(0, -1);
 const directionDown = Point(0, 1);
 
 int solveA(Iterable<String> input) => solve(
-      input,
-      partB: false,
-      canRobotMove: (grid, direction) {
-        var nextPoint = grid.robotPosition + direction;
+  input,
+  partB: false,
+  canRobotMove: (grid, direction) {
+    var nextPoint = grid.robotPosition + direction;
 
-        while (true) {
-          final nextChar = grid.getByPoint(nextPoint);
+    while (true) {
+      final nextChar = grid.getByPoint(nextPoint);
 
-          if (nextChar == charEmpty) {
-            return true;
-          } else if (nextChar == charWall) {
-            return false;
-          }
+      if (nextChar == charEmpty) {
+        return true;
+      } else if (nextChar == charWall) {
+        return false;
+      }
 
-          nextPoint += direction;
-        }
-      },
-      moveRobot: (grid, direction) {
-        var nextPoint = grid.robotPosition + direction;
-        var nextChar = grid.getByPoint(nextPoint);
+      nextPoint += direction;
+    }
+  },
+  moveRobot: (grid, direction) {
+    var nextPoint = grid.robotPosition + direction;
+    var nextChar = grid.getByPoint(nextPoint);
 
-        // We do this regardless
-        grid
-          ..setByPoint(nextPoint, charRobot)
-          ..setByPoint(grid.robotPosition, charEmpty)
-          ..robotPosition = nextPoint;
+    // We do this regardless
+    grid
+      ..setByPoint(nextPoint, charRobot)
+      ..setByPoint(grid.robotPosition, charEmpty)
+      ..robotPosition = nextPoint;
 
-        if (nextChar == charEmpty) {
-          return;
-        }
+    if (nextChar == charEmpty) {
+      return;
+    }
 
-        // We need to move some boxes. Find first empty space forward and put a
-        // box here instead of actually moving potentially multiple boxes
-        // forward.
-        do {
-          nextPoint += direction;
-          nextChar = grid.getByPoint(nextPoint);
-        } while (nextChar != charEmpty);
+    // We need to move some boxes. Find first empty space forward and put a
+    // box here instead of actually moving potentially multiple boxes
+    // forward.
+    do {
+      nextPoint += direction;
+      nextChar = grid.getByPoint(nextPoint);
+    } while (nextChar != charEmpty);
 
-        grid.setByPoint(nextPoint, charBox);
-      },
-    );
+    grid.setByPoint(nextPoint, charBox);
+  },
+);
 
 int solveB(Iterable<String> input) => solve(
-      input,
-      partB: true,
-      canRobotMove: (grid, direction) {
-        if (direction == directionRight || direction == directionLeft) {
-          var nextPoint = grid.robotPosition + direction;
+  input,
+  partB: true,
+  canRobotMove: (grid, direction) {
+    if (direction == directionRight || direction == directionLeft) {
+      var nextPoint = grid.robotPosition + direction;
 
-          while (true) {
-            final nextChar = grid.getByPoint(nextPoint);
+      while (true) {
+        final nextChar = grid.getByPoint(nextPoint);
 
-            if (nextChar == charEmpty) {
-              return true;
-            } else if (nextChar == charWall) {
-              return false;
-            }
-
-            nextPoint += direction;
-          }
-        } else {
-          bool canMove(Grid grid, Point position, Point direction) {
-            final nextPoint = position + direction;
-            final nextChar = grid.getByPoint(nextPoint);
-
-            return switch (nextChar) {
-              charEmpty => true,
-              charWall => false,
-              charOpenBox => canMove(grid, nextPoint, direction) &&
-                  canMove(grid, nextPoint + directionRight, direction),
-              charCloseBox => canMove(grid, nextPoint, direction) &&
-                  canMove(grid, nextPoint + directionLeft, direction),
-              _ => throw Exception("Don't understand: $nextChar = "
-                  "${String.fromCharCode(nextChar)}\n$grid")
-            };
-          }
-
-          return canMove(grid, grid.robotPosition, direction);
-        }
-      },
-      moveRobot: (grid, direction) {
-        void push(Grid grid, Point position, Point direction) {
-          final currentChar = grid.getByPoint(position);
-          final nextPoint = position + direction;
-          final nextChar = grid.getByPoint(nextPoint);
-
-          if (direction == directionRight || direction == directionLeft) {
-            if (nextChar != charEmpty) {
-              push(grid, nextPoint, direction);
-            }
-          } else {
-            if (nextChar == charOpenBox) {
-              final nextClosingBoxPosition = nextPoint + directionRight;
-
-              push(grid, nextPoint, direction);
-              push(grid, nextClosingBoxPosition, direction);
-              grid.setByPoint(nextClosingBoxPosition, charEmpty);
-            } else if (nextChar == charCloseBox) {
-              final nextOpeningBoxPosition = nextPoint + directionLeft;
-
-              push(grid, nextPoint, direction);
-              push(grid, nextOpeningBoxPosition, direction);
-              grid.setByPoint(nextOpeningBoxPosition, charEmpty);
-            }
-          }
-
-          grid.setByPoint(nextPoint, currentChar);
+        if (nextChar == charEmpty) {
+          return true;
+        } else if (nextChar == charWall) {
+          return false;
         }
 
-        push(grid, grid.robotPosition, direction);
-        grid
-          ..setByPoint(grid.robotPosition, charEmpty)
-          ..robotPosition += direction;
-      },
-    );
+        nextPoint += direction;
+      }
+    } else {
+      bool canMove(Grid grid, Point position, Point direction) {
+        final nextPoint = position + direction;
+        final nextChar = grid.getByPoint(nextPoint);
+
+        return switch (nextChar) {
+          charEmpty => true,
+          charWall => false,
+          charOpenBox =>
+            canMove(grid, nextPoint, direction) &&
+                canMove(grid, nextPoint + directionRight, direction),
+          charCloseBox =>
+            canMove(grid, nextPoint, direction) &&
+                canMove(grid, nextPoint + directionLeft, direction),
+          _ =>
+            throw Exception(
+              "Don't understand: $nextChar = "
+              "${String.fromCharCode(nextChar)}\n$grid",
+            ),
+        };
+      }
+
+      return canMove(grid, grid.robotPosition, direction);
+    }
+  },
+  moveRobot: (grid, direction) {
+    void push(Grid grid, Point position, Point direction) {
+      final currentChar = grid.getByPoint(position);
+      final nextPoint = position + direction;
+      final nextChar = grid.getByPoint(nextPoint);
+
+      if (direction == directionRight || direction == directionLeft) {
+        if (nextChar != charEmpty) {
+          push(grid, nextPoint, direction);
+        }
+      } else {
+        if (nextChar == charOpenBox) {
+          final nextClosingBoxPosition = nextPoint + directionRight;
+
+          push(grid, nextPoint, direction);
+          push(grid, nextClosingBoxPosition, direction);
+          grid.setByPoint(nextClosingBoxPosition, charEmpty);
+        } else if (nextChar == charCloseBox) {
+          final nextOpeningBoxPosition = nextPoint + directionLeft;
+
+          push(grid, nextPoint, direction);
+          push(grid, nextOpeningBoxPosition, direction);
+          grid.setByPoint(nextOpeningBoxPosition, charEmpty);
+        }
+      }
+
+      grid.setByPoint(nextPoint, currentChar);
+    }
+
+    push(grid, grid.robotPosition, direction);
+    grid
+      ..setByPoint(grid.robotPosition, charEmpty)
+      ..robotPosition += direction;
+  },
+);
 
 int solve(
   Iterable<String> input, {
@@ -157,8 +162,10 @@ int solve(
         charUp => directionUp,
         charDown => directionDown,
         final instruction =>
-          throw Exception('Unknown instruction: $instruction = '
-              '${String.fromCharCode(instruction)}'),
+          throw Exception(
+            'Unknown instruction: $instruction = '
+            '${String.fromCharCode(instruction)}',
+          ),
       };
 
       if (canRobotMove(grid, direction)) {
@@ -217,15 +224,9 @@ extension type const Point._(({int x, int y}) _point) {
   int get x => _point.x;
   int get y => _point.y;
 
-  Point operator +(Point other) => Point(
-        x + other.x,
-        y + other.y,
-      );
+  Point operator +(Point other) => Point(x + other.x, y + other.y);
 
-  Point operator -(Point other) => Point(
-        x - other.x,
-        y - other.y,
-      );
+  Point operator -(Point other) => Point(x - other.x, y - other.y);
 }
 
 class Grid {
@@ -234,9 +235,9 @@ class Grid {
   late Point robotPosition;
 
   Grid(List<String> input)
-      : length = input.first.length,
-        height = input.length,
-        _list = Uint8List((input.length * input.first.length)) {
+    : length = input.first.length,
+      height = input.length,
+      _list = Uint8List((input.length * input.first.length)) {
     for (final (y, line) in input.indexed) {
       for (var x = 0; x < line.length; x++) {
         final char = line.codeUnitAt(x);

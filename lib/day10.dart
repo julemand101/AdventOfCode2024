@@ -14,8 +14,10 @@ int solve(List<String> input, {required bool partB}) {
     ..setFromInput(input, padding: 1);
 
   return grid.zeroPositions
-      .map((startingPosition) =>
-          reachTop(grid, startingPosition, 0, partB ? null : HashSet()))
+      .map(
+        (startingPosition) =>
+            reachTop(grid, startingPosition, 0, partB ? null : HashSet()),
+      )
       .sum;
 }
 
@@ -52,15 +54,9 @@ extension type const Point._(({int x, int y}) _point) {
   int get x => _point.x;
   int get y => _point.y;
 
-  Point operator +(Point other) => Point(
-        x + other.x,
-        y + other.y,
-      );
+  Point operator +(Point other) => Point(x + other.x, y + other.y);
 
-  Point operator -(Point other) => Point(
-        x - other.x,
-        y - other.y,
-      );
+  Point operator -(Point other) => Point(x - other.x, y - other.y);
 }
 
 class Grid {

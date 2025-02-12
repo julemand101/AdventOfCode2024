@@ -12,7 +12,8 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 ....#.....
 .........#
 ..........
@@ -23,9 +24,10 @@ void main() {
 ........#.
 #.........
 ......#...
-'''
-              .toLinesList()),
-          equals(41));
+'''.toLinesList(),
+        ),
+        equals(41),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(4696));
@@ -34,7 +36,8 @@ void main() {
   group('Part Two', () {
     test('Example 1', () async {
       expect(
-          await solveB(r'''
+        await solveB(
+          r'''
 ....#.....
 .........#
 ..........
@@ -45,9 +48,10 @@ void main() {
 ........#.
 #.........
 ......#...
-'''
-              .toLinesList()),
-          equals(6));
+'''.toLinesList(),
+        ),
+        equals(6),
+      );
     });
     test('Solution', () async {
       expect(await solveB(input), equals(1443));

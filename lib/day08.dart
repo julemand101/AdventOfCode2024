@@ -30,8 +30,11 @@ int solve(List<String> input, {required bool partB}) {
       if (char == '.') {
         continue;
       }
-      antennas.update(char, (list) => list..add((x: x, y: y)),
-          ifAbsent: () => [(x: x, y: y)]);
+      antennas.update(
+        char,
+        (list) => list..add((x: x, y: y)),
+        ifAbsent: () => [(x: x, y: y)],
+      );
     }
   }
 
@@ -41,12 +44,16 @@ int solve(List<String> input, {required bool partB}) {
       final yDistance = p1.y - p2.y;
 
       if (partB) {
-        for (var i = 1;
-            addAntinode((x: p1.x + xDistance * i, y: p1.y + yDistance * i));
-            i++) {}
-        for (var i = 1;
-            addAntinode((x: p2.x - xDistance * i, y: p2.y - yDistance * i));
-            i++) {}
+        for (
+          var i = 1;
+          addAntinode((x: p1.x + xDistance * i, y: p1.y + yDistance * i));
+          i++
+        ) {}
+        for (
+          var i = 1;
+          addAntinode((x: p2.x - xDistance * i, y: p2.y - yDistance * i));
+          i++
+        ) {}
       } else {
         addAntinode((x: p1.x + xDistance, y: p1.y + yDistance));
         addAntinode((x: p2.x - xDistance, y: p2.y - yDistance));

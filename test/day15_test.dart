@@ -12,7 +12,8 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 ########
 #..O.O.#
 ##@.O..#
@@ -23,13 +24,15 @@ void main() {
 ########
 
 <^^>>>vv<v>>v<<
-'''
-              .asLines),
-          equals(2028));
+'''.asLines,
+        ),
+        equals(2028),
+      );
     });
     test('Example 2', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 ##########
 #..O..O.O#
 #......O.#
@@ -51,9 +54,10 @@ vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
 <><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>
 ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
 v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^
-'''
-              .asLines),
-          equals(10092));
+'''.asLines,
+        ),
+        equals(10092),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(1451928));
@@ -62,7 +66,8 @@ v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 ##########
 #..O..O.O#
 #......O.#
@@ -84,9 +89,10 @@ vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
 <><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>
 ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
 v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^
-'''
-              .asLines),
-          equals(9021));
+'''.asLines,
+        ),
+        equals(9021),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(1462788));

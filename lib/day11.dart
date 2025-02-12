@@ -17,11 +17,8 @@ int solve(String input, {int blink = 25}) {
   var nextStones = HashMap<int, int>();
   for (var i = 0; i < blink; i++) {
     for (final MapEntry(key: stone, value: amount) in currentStones.entries) {
-      void addNextStone(int stone) => nextStones.update(
-            stone,
-            (v) => v + amount,
-            ifAbsent: () => amount,
-          );
+      void addNextStone(int stone) =>
+          nextStones.update(stone, (v) => v + amount, ifAbsent: () => amount);
 
       if (stone == 0) {
         addNextStone(1);

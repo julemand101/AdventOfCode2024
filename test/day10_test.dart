@@ -12,18 +12,21 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 0123
 1234
 8765
 9876
-'''
-              .toLinesList()),
-          equals(1));
+'''.toLinesList(),
+        ),
+        equals(1),
+      );
     });
     test('Example 2', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 ...0...
 ...1...
 ...2...
@@ -31,13 +34,15 @@ void main() {
 7.....7
 8.....8
 9.....9
-'''
-              .toLinesList()),
-          equals(2));
+'''.toLinesList(),
+        ),
+        equals(2),
+      );
     });
     test('Example 3', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 ..90..9
 ...1.98
 ...2..7
@@ -45,13 +50,15 @@ void main() {
 765.987
 876....
 987....
-'''
-              .toLinesList()),
-          equals(4));
+'''.toLinesList(),
+        ),
+        equals(4),
+      );
     });
     test('Example 4', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 10..9..
 2...8..
 3...7..
@@ -59,13 +66,15 @@ void main() {
 ...8..3
 ...9..2
 .....01
-'''
-              .toLinesList()),
-          equals(3));
+'''.toLinesList(),
+        ),
+        equals(3),
+      );
     });
     test('Example 5', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 89010123
 78121874
 87430965
@@ -74,9 +83,10 @@ void main() {
 32019012
 01329801
 10456732
-'''
-              .toLinesList()),
-          equals(36));
+'''.toLinesList(),
+        ),
+        equals(36),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(582));
@@ -85,7 +95,8 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 .....0.
 ..4321.
 ..5..2.
@@ -93,13 +104,15 @@ void main() {
 ..7..4.
 ..8765.
 ..9....
-'''
-              .toLinesList()),
-          equals(3));
+'''.toLinesList(),
+        ),
+        equals(3),
+      );
     });
     test('Example 2', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 ..90..9
 ...1.98
 ...2..7
@@ -107,26 +120,30 @@ void main() {
 765.987
 876....
 987....
-'''
-              .toLinesList()),
-          equals(13));
+'''.toLinesList(),
+        ),
+        equals(13),
+      );
     });
     test('Example 3', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 012345
 123456
 234567
 345678
 4.6789
 56789.
-'''
-              .toLinesList()),
-          equals(227));
+'''.toLinesList(),
+        ),
+        equals(227),
+      );
     });
     test('Example 4', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 89010123
 78121874
 87430965
@@ -135,9 +152,10 @@ void main() {
 32019012
 01329801
 10456732
-'''
-              .toLinesList()),
-          equals(81));
+'''.toLinesList(),
+        ),
+        equals(81),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(1302));

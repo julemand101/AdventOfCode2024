@@ -113,29 +113,17 @@ extension type const Point._(({int x, int y}) _point) {
   int get x => _point.x;
   int get y => _point.y;
 
-  Point operator +(Point other) => Point(
-        x + other.x,
-        y + other.y,
-      );
+  Point operator +(Point other) => Point(x + other.x, y + other.y);
 
-  Point operator -(Point other) => Point(
-        x - other.x,
-        y - other.y,
-      );
+  Point operator -(Point other) => Point(x - other.x, y - other.y);
 }
 
 extension type const Fence._((Point, Point) _fence) {
   const Fence(Point p1, Point p2) : this._((p1, p2));
 
-  Fence operator +(Point other) => Fence(
-        _fence.$1 + other,
-        _fence.$2 + other,
-      );
+  Fence operator +(Point other) => Fence(_fence.$1 + other, _fence.$2 + other);
 
-  Fence operator -(Point other) => Fence(
-        _fence.$1 - other,
-        _fence.$2 - other,
-      );
+  Fence operator -(Point other) => Fence(_fence.$1 - other, _fence.$2 - other);
 }
 
 class Grid {
@@ -143,9 +131,9 @@ class Grid {
   final Uint8List _list;
 
   Grid(List<String> input)
-      : length = input.first.length,
-        height = input.length,
-        _list = Uint8List((input.length * input.first.length)) {
+    : length = input.first.length,
+      height = input.length,
+      _list = Uint8List((input.length * input.first.length)) {
     for (final (y, line) in input.indexed) {
       for (var x = 0; x < line.length; x++) {
         set(x, y, line.codeUnitAt(x));
@@ -154,9 +142,10 @@ class Grid {
   }
 
   int getByPoint(Point p) => get(p.x, p.y);
-  int get(int x, int y) => (x < 0 || y < 0 || x >= length || y >= height)
-      ? outsideGrid
-      : _list[_getPos(x, y)];
+  int get(int x, int y) =>
+      (x < 0 || y < 0 || x >= length || y >= height)
+          ? outsideGrid
+          : _list[_getPos(x, y)];
 
   void setByPoint(Point p, int value) => set(p.x, p.y, value);
   void set(int x, int y, int value) => _list[_getPos(x, y)] = value;

@@ -21,16 +21,20 @@ int solve(Iterable<String> input, {required bool partB}) {
     final [ax, ay] = [
       ...buttonRegExp
           .firstMatch(chunk[0])!
-          .groups(const [1, 2]).map((s) => int.parse(s!))
+          .groups(const [1, 2])
+          .map((s) => int.parse(s!)),
     ];
     final [bx, by] = [
       ...buttonRegExp
           .firstMatch(chunk[1])!
-          .groups(const [1, 2]).map((s) => int.parse(s!))
+          .groups(const [1, 2])
+          .map((s) => int.parse(s!)),
     ];
     final [px, py] = [
-      ...prizeRegExp.firstMatch(chunk[2])!.groups(const [1, 2]).map(
-          (s) => int.parse(s!) + (partB ? 10000000000000 : 0))
+      ...prizeRegExp
+          .firstMatch(chunk[2])!
+          .groups(const [1, 2])
+          .map((s) => int.parse(s!) + (partB ? 10000000000000 : 0)),
     ];
 
     final aButton = ((by * px) - (bx * py)) / ((ax * by) - (ay * bx));

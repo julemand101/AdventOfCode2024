@@ -12,7 +12,8 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 47|53
 97|13
 97|61
@@ -41,9 +42,10 @@ void main() {
 75,97,47,61,53
 61,13,29
 97,13,75,29,47
-'''
-              .asLines),
-          equals(143));
+'''.asLines,
+        ),
+        equals(143),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(6951));
@@ -52,7 +54,8 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 47|53
 97|13
 97|61
@@ -81,9 +84,10 @@ void main() {
 75,97,47,61,53
 61,13,29
 97,13,75,29,47
-'''
-              .asLines),
-          equals(123));
+'''.asLines,
+        ),
+        equals(123),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(4121));

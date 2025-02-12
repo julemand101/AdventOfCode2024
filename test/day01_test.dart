@@ -12,16 +12,18 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 3   4
 4   3
 2   5
 1   3
 3   9
 3   3
-'''
-              .asLines),
-          equals(11));
+'''.asLines,
+        ),
+        equals(11),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(1341714));
@@ -30,16 +32,18 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 3   4
 4   3
 2   5
 1   3
 3   9
 3   3
-'''
-              .asLines),
-          equals(31));
+'''.asLines,
+        ),
+        equals(31),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(27384707));

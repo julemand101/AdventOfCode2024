@@ -12,7 +12,8 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 MMMSXXMASM
 MSAMXMSMSA
 AMXSXMAAMM
@@ -23,9 +24,10 @@ SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
-'''
-              .toLinesList()),
-          equals(18));
+'''.toLinesList(),
+        ),
+        equals(18),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(2685));
@@ -34,7 +36,8 @@ MXMXAXMASX
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 MMMSXXMASM
 MSAMXMSMSA
 AMXSXMAAMM
@@ -45,9 +48,10 @@ SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
-'''
-              .toLinesList()),
-          equals(9));
+'''.toLinesList(),
+        ),
+        equals(9),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(2048));

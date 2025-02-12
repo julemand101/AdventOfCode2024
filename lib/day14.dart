@@ -85,7 +85,8 @@ class Robot {
     final [px, py, vx, vy] = [
       ...robotRegExp
           .firstMatch(line)!
-          .groups([1, 2, 3, 4]).map((s) => int.parse(s!))
+          .groups([1, 2, 3, 4])
+          .map((s) => int.parse(s!)),
     ];
 
     return Robot._(position: Point(px, py), velocity: Point(vx, vy));
@@ -102,20 +103,11 @@ extension type const Point._(({int x, int y}) _point) {
   int get x => _point.x;
   int get y => _point.y;
 
-  Point operator +(Point other) => Point(
-        x + other.x,
-        y + other.y,
-      );
+  Point operator +(Point other) => Point(x + other.x, y + other.y);
 
-  Point operator -(Point other) => Point(
-        x - other.x,
-        y - other.y,
-      );
+  Point operator -(Point other) => Point(x - other.x, y - other.y);
 
-  Point operator %(Point other) => Point(
-        x % other.x,
-        y % other.y,
-      );
+  Point operator %(Point other) => Point(x % other.x, y % other.y);
 }
 
 class Grid {

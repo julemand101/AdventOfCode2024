@@ -12,7 +12,8 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 ............
 ........0...
 .....0......
@@ -25,9 +26,10 @@ void main() {
 .........A..
 ............
 ............
-'''
-              .toLinesList()),
-          equals(14));
+'''.toLinesList(),
+        ),
+        equals(14),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(423));
@@ -36,7 +38,8 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 T.........
 ...T......
 .T........
@@ -47,13 +50,15 @@ T.........
 ..........
 ..........
 ..........
-'''
-              .toLinesList()),
-          equals(9));
+'''.toLinesList(),
+        ),
+        equals(9),
+      );
     });
     test('Example 2', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 ............
 ........0...
 .....0......
@@ -66,9 +71,10 @@ T.........
 .........A..
 ............
 ............
-'''
-              .toLinesList()),
-          equals(34));
+'''.toLinesList(),
+        ),
+        equals(34),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(1287));

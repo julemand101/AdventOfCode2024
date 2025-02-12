@@ -12,30 +12,35 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 AAAA
 BBCD
 BBCC
 EEEC
-'''
-              .toLinesList()),
-          equals(140));
+'''.toLinesList(),
+        ),
+        equals(140),
+      );
     });
     test('Example 2', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 OOOOO
 OXOXO
 OOOOO
 OXOXO
 OOOOO
-'''
-              .toLinesList()),
-          equals(772));
+'''.toLinesList(),
+        ),
+        equals(772),
+      );
     });
     test('Example 3', () {
       expect(
-          solveA(r'''
+        solveA(
+          r'''
 RRRRIICCFF
 RRRRIICCCF
 VVRRRCCFFF
@@ -46,9 +51,10 @@ VVIIICJJEE
 MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE
-'''
-              .toLinesList()),
-          equals(1930));
+'''.toLinesList(),
+        ),
+        equals(1930),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(1387004));
@@ -57,55 +63,64 @@ MMMISSJEEE
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 AAAA
 BBCD
 BBCC
 EEEC
-'''
-              .toLinesList()),
-          equals(80));
+'''.toLinesList(),
+        ),
+        equals(80),
+      );
     });
     test('Example 2', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 OOOOO
 OXOXO
 OOOOO
 OXOXO
 OOOOO
-'''
-              .toLinesList()),
-          equals(436));
+'''.toLinesList(),
+        ),
+        equals(436),
+      );
     });
     test('Example 3', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 EEEEE
 EXXXX
 EEEEE
 EXXXX
 EEEEE
-'''
-              .toLinesList()),
-          equals(236));
+'''.toLinesList(),
+        ),
+        equals(236),
+      );
     });
     test('Example 4', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 AAAAAA
 AAABBA
 AAABBA
 ABBAAA
 ABBAAA
 AAAAAA
-'''
-              .toLinesList()),
-          equals(368));
+'''.toLinesList(),
+        ),
+        equals(368),
+      );
     });
     test('Example 5', () {
       expect(
-          solveB(r'''
+        solveB(
+          r'''
 RRRRIICCFF
 RRRRIICCCF
 VVRRRCCFFF
@@ -116,9 +131,10 @@ VVIIICJJEE
 MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE
-'''
-              .toLinesList()),
-          equals(1206));
+'''.toLinesList(),
+        ),
+        equals(1206),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(844198));
