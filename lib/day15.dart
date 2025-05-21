@@ -96,11 +96,10 @@ int solveB(Iterable<String> input) => solve(
           charCloseBox =>
             canMove(grid, nextPoint, direction) &&
                 canMove(grid, nextPoint + directionLeft, direction),
-          _ =>
-            throw Exception(
-              "Don't understand: $nextChar = "
-              "${String.fromCharCode(nextChar)}\n$grid",
-            ),
+          _ => throw Exception(
+            "Don't understand: $nextChar = "
+            "${String.fromCharCode(nextChar)}\n$grid",
+          ),
         };
       }
 
@@ -161,11 +160,10 @@ int solve(
         charRight => directionRight,
         charUp => directionUp,
         charDown => directionDown,
-        final instruction =>
-          throw Exception(
-            'Unknown instruction: $instruction = '
-            '${String.fromCharCode(instruction)}',
-          ),
+        final instruction => throw Exception(
+          'Unknown instruction: $instruction = '
+          '${String.fromCharCode(instruction)}',
+        ),
       };
 
       if (canRobotMove(grid, direction)) {

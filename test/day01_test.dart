@@ -20,7 +20,8 @@ void main() {
 1   3
 3   9
 3   3
-'''.asLines,
+'''
+              .asLines,
         ),
         equals(11),
       );
@@ -40,7 +41,8 @@ void main() {
 1   3
 3   9
 3   3
-'''.asLines,
+'''
+              .asLines,
         ),
         equals(31),
       );

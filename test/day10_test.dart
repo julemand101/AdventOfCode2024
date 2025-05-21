@@ -18,7 +18,8 @@ void main() {
 1234
 8765
 9876
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(1),
       );
@@ -34,7 +35,8 @@ void main() {
 7.....7
 8.....8
 9.....9
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(2),
       );
@@ -50,7 +52,8 @@ void main() {
 765.987
 876....
 987....
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(4),
       );
@@ -66,7 +69,8 @@ void main() {
 ...8..3
 ...9..2
 .....01
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(3),
       );
@@ -83,7 +87,8 @@ void main() {
 32019012
 01329801
 10456732
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(36),
       );
@@ -104,7 +109,8 @@ void main() {
 ..7..4.
 ..8765.
 ..9....
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(3),
       );
@@ -120,7 +126,8 @@ void main() {
 765.987
 876....
 987....
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(13),
       );
@@ -135,7 +142,8 @@ void main() {
 345678
 4.6789
 56789.
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(227),
       );
@@ -152,7 +160,8 @@ void main() {
 32019012
 01329801
 10456732
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(81),
       );

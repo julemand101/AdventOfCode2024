@@ -142,10 +142,9 @@ class Grid {
   }
 
   int getByPoint(Point p) => get(p.x, p.y);
-  int get(int x, int y) =>
-      (x < 0 || y < 0 || x >= length || y >= height)
-          ? outsideGrid
-          : _list[_getPos(x, y)];
+  int get(int x, int y) => (x < 0 || y < 0 || x >= length || y >= height)
+      ? outsideGrid
+      : _list[_getPos(x, y)];
 
   void setByPoint(Point p, int value) => set(p.x, p.y, value);
   void set(int x, int y, int value) => _list[_getPos(x, y)] = value;

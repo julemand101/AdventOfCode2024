@@ -15,9 +15,10 @@ int solveB(Iterable<String> input) => solve(input, partB: true);
 int solve(Iterable<String> input, {required bool partB}) {
   var sum = 0;
 
-  for (final chunk in input
-      .where((line) => line.isNotEmpty)
-      .splitBefore((line) => line.startsWith('Button A:'))) {
+  for (final chunk
+      in input
+          .where((line) => line.isNotEmpty)
+          .splitBefore((line) => line.startsWith('Button A:'))) {
     final [ax, ay] = [
       ...buttonRegExp
           .firstMatch(chunk[0])!

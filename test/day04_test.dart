@@ -24,7 +24,8 @@ SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(18),
       );
@@ -48,7 +49,8 @@ SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX
-'''.toLinesList(),
+'''
+              .toLinesList(),
         ),
         equals(9),
       );

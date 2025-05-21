@@ -15,10 +15,9 @@ class Grid {
 
   Grid(this.length, this.height) : _list = Uint8List(length * height);
 
-  int? get(int x, int y) =>
-      (x >= 0 && x < length && y >= 0 && y < height)
-          ? _list[_getPos(x, y)]
-          : null;
+  int? get(int x, int y) => (x >= 0 && x < length && y >= 0 && y < height)
+      ? _list[_getPos(x, y)]
+      : null;
 
   void set(int x, int y, int value) => _list[_getPos(x, y)] = value;
 

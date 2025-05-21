@@ -34,52 +34,49 @@ Future<int> solveB(List<String> input) async {
   final jobsPerCore = distinctPositions.length ~/ Platform.numberOfProcessors;
 
   return (await [
-        for (final positionsToCheck in distinctPositions.slices(
-          jobsPerCore + 1,
-        ))
-          Isolate.run(() {
-            var loopPositions = 0;
+    for (final positionsToCheck in distinctPositions.slices(jobsPerCore + 1))
+      Isolate.run(() {
+        var loopPositions = 0;
 
-            for (final distinctPosition in positionsToCheck) {
-              // Put obstacle at position
-              grid.setByPoint(distinctPosition, obstructionChar);
+        for (final distinctPosition in positionsToCheck) {
+          // Put obstacle at position
+          grid.setByPoint(distinctPosition, obstructionChar);
 
-              // Point and direction set.
-              // If we detect the same combo, we are in a loop
-              final loopDetect = HashSet<(Point, int)>();
-              var guardPosition = grid.guardStartingPoint;
-              var direction = 0;
+          // Point and direction set.
+          // If we detect the same combo, we are in a loop
+          final loopDetect = HashSet<(Point, int)>();
+          var guardPosition = grid.guardStartingPoint;
+          var direction = 0;
 
-              while (true) {
-                final nextGuardPosition = guardPosition + movements[direction];
-                final objectOnNewPosition = grid.getByPoint(nextGuardPosition);
+          while (true) {
+            final nextGuardPosition = guardPosition + movements[direction];
+            final objectOnNewPosition = grid.getByPoint(nextGuardPosition);
 
-                if (objectOnNewPosition == null) {
-                  // Hit outside of grid which means we are done
-                  break;
-                } else if (objectOnNewPosition == obstructionChar) {
-                  // Check if we are looping
-                  if (!loopDetect.add((guardPosition, direction))) {
-                    loopPositions++;
-                    break;
-                  }
-
-                  // Hit obstacle so rotate
-                  direction = (direction + 1) % movements.length;
-                } else {
-                  // Move to free space
-                  guardPosition = nextGuardPosition;
-                }
+            if (objectOnNewPosition == null) {
+              // Hit outside of grid which means we are done
+              break;
+            } else if (objectOnNewPosition == obstructionChar) {
+              // Check if we are looping
+              if (!loopDetect.add((guardPosition, direction))) {
+                loopPositions++;
+                break;
               }
 
-              // Reset grid back to original map
-              grid.setByPoint(distinctPosition, emptyChar);
+              // Hit obstacle so rotate
+              direction = (direction + 1) % movements.length;
+            } else {
+              // Move to free space
+              guardPosition = nextGuardPosition;
             }
+          }
 
-            return loopPositions;
-          }),
-      ].wait)
-      .sum;
+          // Reset grid back to original map
+          grid.setByPoint(distinctPosition, emptyChar);
+        }
+
+        return loopPositions;
+      }),
+  ].wait).sum;
 }
 
 ({Set<Point> distinctPositions, Grid grid}) getDistinctPositions(
@@ -131,10 +128,9 @@ class Grid {
   Grid(this.length, this.height) : _list = Uint8List(length * height);
 
   int? getByPoint(Point p) => get(p.x, p.y);
-  int? get(int x, int y) =>
-      (x >= 0 && x < length && y >= 0 && y < height)
-          ? _list[_getPos(x, y)]
-          : null;
+  int? get(int x, int y) => (x >= 0 && x < length && y >= 0 && y < height)
+      ? _list[_getPos(x, y)]
+      : null;
 
   void setByPoint(Point p, int value) => set(p.x, p.y, value);
   void set(int x, int y, int value) => _list[_getPos(x, y)] = value;

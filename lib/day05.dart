@@ -3,20 +3,15 @@
 
 import 'package:collection/collection.dart';
 
-int solveA(Iterable<String> input) =>
-    getPageLists(
-      input,
-      getSorted: true,
-    ).map((o) => o.pageList[o.pageList.length ~/ 2]).sum;
+int solveA(Iterable<String> input) => getPageLists(
+  input,
+  getSorted: true,
+).map((o) => o.pageList[o.pageList.length ~/ 2]).sum;
 
-int solveB(Iterable<String> input) =>
-    getPageLists(input, getSorted: false)
-        .map(
-          (o) =>
-              o.pageList..sort((p1, p2) => comparePages(o.pageRules, p1, p2)),
-        )
-        .map((pageList) => pageList[pageList.length ~/ 2])
-        .sum;
+int solveB(Iterable<String> input) => getPageLists(input, getSorted: false)
+    .map((o) => o.pageList..sort((p1, p2) => comparePages(o.pageRules, p1, p2)))
+    .map((pageList) => pageList[pageList.length ~/ 2])
+    .sum;
 
 Iterable<({List<int> pageList, Map<int, Set<int>> pageRules})> getPageLists(
   Iterable<String> input, {
