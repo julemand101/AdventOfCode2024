@@ -16,13 +16,7 @@ int solveA(Iterable<String> input) {
   listA.sort();
   listB.sort();
 
-  var distanceSum = 0;
-
-  for (final (index, valueA) in listA.indexed) {
-    distanceSum += (valueA - listB[index]).abs();
-  }
-
-  return distanceSum;
+  return listA.mapIndexed((index, valueA) => (valueA - listB[index]).abs()).sum;
 }
 
 int solveB(Iterable<String> input) {
