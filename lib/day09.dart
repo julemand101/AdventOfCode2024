@@ -1,6 +1,8 @@
 // --- Day 9: Disk Fragmenter ---
 // https://adventofcode.com/2024/day/9
 
+import 'dart:collection';
+
 import 'package:collection/collection.dart';
 
 int solveA(String input) {
@@ -37,52 +39,73 @@ int solveA(String input) {
   return disk.whereType<int>().indexed.map((e) => e.$1 * e.$2).sum;
 }
 
+sealed class Block extends LinkedListEntry<Block> {
+  int length;
+
+  Block({required this.length});
+}
+
+final class DataBlock extends Block {
+  int id;
+
+  DataBlock({required this.id, required super.length});
+}
+
+final class FreeBlock extends Block {
+  FreeBlock({required super.length});
+}
+
 int solveB(String input) {
-  final disk = <int>[]; // -1 means empty
-  var id = 0;
+  final disk = LinkedList<Block>();
+  final dataBlocks = <DataBlock>[];
 
-  for (final (index, diskMap) in input.split('').map(int.parse).indexed) {
-    if (index % 2 == 0) {
-      for (var i = 0; i < diskMap; i++) {
-        disk.add(id);
-      }
-      id++;
+  // Read disk
+  for (var i = 0, id = 0; i < input.length; i++) {
+    var digit = int.parse(input[i]);
+
+    if (i % 2 == 0) {
+      final dataBlock = DataBlock(id: id++, length: digit);
+      disk.add(dataBlock);
+      dataBlocks.add(dataBlock);
     } else {
-      for (var i = 0; i < diskMap; i++) {
-        disk.add(-1);
-      }
+      disk.add(FreeBlock(length: digit));
     }
   }
 
-  bigLoop:
-  while (--id >= 0) {
-    final startBlock = disk.indexOf(id);
-    final stopBlock = disk.lastIndexOf(id);
-    final sizeOfBlock = stopBlock - startBlock + 1;
+  for (final dataBlock in dataBlocks.reversed) {
+    final freeBlock = disk
+        .takeWhile((block) => !identical(block, dataBlock))
+        .whereType<FreeBlock>()
+        .firstWhereOrNull((block) => block.length >= dataBlock.length);
 
-    var freeIndexStart = 0;
-    var freeIndexStop = 0;
-    var freeSpaceBlockSize = 0;
-
-    while (freeSpaceBlockSize < sizeOfBlock) {
-      freeIndexStart = disk.indexOf(-1, freeIndexStop + 1);
-      freeIndexStop = disk.indexWhere(notEmpty, freeIndexStart + 1);
-
-      if (freeIndexStart == -1 ||
-          freeIndexStop == -1 ||
-          freeIndexStart > startBlock) {
-        continue bigLoop;
-      }
-
-      freeSpaceBlockSize = freeIndexStop - freeIndexStart;
+    if (freeBlock == null) {
+      continue;
     }
 
-    for (var i = 0; i < sizeOfBlock; i++) {
-      disk.swap(startBlock + i, freeIndexStart + i);
+    dataBlock.insertAfter(FreeBlock(length: dataBlock.length));
+    dataBlock.unlink();
+
+    freeBlock.insertBefore(dataBlock);
+    freeBlock.length -= dataBlock.length;
+
+    if (freeBlock.length == 0) {
+      freeBlock.unlink();
     }
   }
 
-  return disk.indexed.map((e) => e.$2 == -1 ? 0 : e.$1 * e.$2).sum;
+  var sum = 0, index = 0;
+
+  for (final block in disk) {
+    if (block is DataBlock) {
+      for (var i = 0; i < block.length; i++) {
+        sum += block.id * index++;
+      }
+    } else {
+      index += block.length;
+    }
+  }
+
+  return sum;
 }
 
 bool notEmpty(int value) => value != -1;
