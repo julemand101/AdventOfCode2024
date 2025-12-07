@@ -82,7 +82,11 @@ int solveB(String input) {
       continue;
     }
 
-    dataBlock.insertAfter(FreeBlock(length: dataBlock.length));
+    if (dataBlock.next case FreeBlock freeBlock) {
+      freeBlock.length += dataBlock.length;
+    } else {
+      dataBlock.insertAfter(FreeBlock(length: dataBlock.length));
+    }
     dataBlock.unlink();
 
     freeBlock.insertBefore(dataBlock);
