@@ -29,4 +29,24 @@ Program: 0,1,5,4,3,0
       expect(solveA(input), equals('7,4,2,5,1,4,6,0,4'));
     });
   });
+  group('Part Two', () {
+    test('Example 1', () {
+      expect(
+        solveB(
+          r'''
+Register A: 2024
+Register B: 0
+Register C: 0
+
+Program: 0,3,5,4,3,0
+'''
+              .asLines,
+        ),
+        equals(117440),
+      );
+    });
+    test('Solution', () {
+      expect(solveB(input), equals(-1));
+    });
+  });
 }

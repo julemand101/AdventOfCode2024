@@ -22,6 +22,49 @@ String solveA(Iterable<String> input) {
     }
   }
 
+  return solve(registerA, registerB, registerC, program).join(',');
+}
+
+int solveB(Iterable<String> input) {
+  final program = <int>[];
+
+  // Parse input
+  for (final line in input) {
+    if (line.startsWith('Program: ')) {
+      program.addAll(line.split('Program: ')[1].split(',').map(int.parse));
+    }
+  }
+
+  loop1:
+  for (var registerA = 0; registerA < 100000000000; registerA++) {
+    var pos = 0;
+
+    if (registerA % 1000000 == 0) {
+      print(registerA);
+    }
+
+    for (final outputValue in solve(registerA, 0, 0, program)) {
+      if (pos >= program.length) {
+        continue loop1;
+      }
+      if (program[pos++] != outputValue) {
+        continue loop1;
+      }
+    }
+
+    if (pos == program.length) {
+      return registerA;
+    }
+  }
+
+  return 0;
+}
+
+Iterable<int> solve(int regA, int regB, int regC, List<int> program) sync* {
+  var registerA = regA;
+  var registerB = regB;
+  var registerC = regC;
+
   int comboOperand(int value) => switch (value) {
     0 || 1 || 2 || 3 => value,
     4 => registerA,
@@ -30,7 +73,6 @@ String solveA(Iterable<String> input) {
     var value => throw Exception('Not valid value: $value'),
   };
 
-  final output = <int>[];
   var instructionCounter = 0;
 
   while (instructionCounter >= 0 && instructionCounter < program.length) {
@@ -64,7 +106,7 @@ String solveA(Iterable<String> input) {
 
       // out - output combo operand modulo 8
       case 5:
-        output.add(comboOperand(program[instructionCounter++]) % 8);
+        yield comboOperand(program[instructionCounter++]) % 8;
 
       // bdv - adv instruction but result is stored in the B register
       case 6:
@@ -82,6 +124,4 @@ String solveA(Iterable<String> input) {
         throw Exception('Unknown instruction: $instruction');
     }
   }
-
-  return output.join(',');
 }
