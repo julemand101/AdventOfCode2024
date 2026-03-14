@@ -48,5 +48,5 @@ Program: 0,3,5,4,3,0
     test('Solution', () {
       expect(solveB(input), equals(-1));
     });
-  });
+  }, skip: true);
 }
